@@ -10,7 +10,7 @@ const User = require('../../models/User');
 //route GET /api/users/
 //desc  login
 router.post(
-  '/',
+  '/login',
   [
     check('email', 'Enter Proper Email').isEmail(),
     check('password', 'min length is 6').isLength({ min: 6 }),

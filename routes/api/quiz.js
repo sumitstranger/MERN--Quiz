@@ -34,6 +34,7 @@ route.post(
       option3,
       option4,
     } = req.body;
+    console.log(option1);
     try {
       const user = await User.findById(req.user.id);
       let quiz = await Quiz.findOne({ quiz_name });
@@ -53,21 +54,21 @@ route.post(
 
       const opt1 = new Option({
         question: question.id,
-        option_text: option1,
+        ...option1,
       });
 
       const opt2 = new Option({
         question: question.id,
-        option_text: option2,
+        ...option2,
       });
 
       const opt3 = new Option({
         question: question.id,
-        option_text: option3,
+        ...option3,
       });
       const opt4 = new Option({
         question: question.id,
-        option_text: option4,
+        ...option4,
       });
 
       await opt1.save();
@@ -83,12 +84,39 @@ route.post(
   }
 );
 
-route.get('/', auth, async (req, res) => {
+route.get('/:quiz_id', auth, async (req, res) => {
   try {
-    const quiz = await Qusetion.find({ quiz_name: '5eb57b7ac8f9bf653ff0fb83' });
-    const option = await Option.find({ question: '5eb57b7bc8f9bf653ff0fb84' });
-    res.json({ quiz, option });
-  } catch (error) {
+    let que_set = new Array();
+    const quiz = await Qusetion.find({ quiz_name: req.params.quiz_id });
+
+    que_set = await Promise.all(
+      quiz.forEach(async (q) => {
+        let ques_obj = new Object();
+
+        ques_obj = {
+          question: q,
+        };
+
+        const option = await Option.find({ question: q._id });
+
+        let option_set = new Array();
+
+        option.forEach((opt) => option_set.push(opt));
+
+        return ques_obj;
+        // ques_obj = {
+        //   question: q,
+        //   option: JSON.stringify(option_set),
+        // };
+
+        //  console.log(ques_obj);
+      })
+    );
+
+    console.log(que_set);
+    res.json(que_set);
+    //res.json(JSON.stringify(que_set));
+  } catch (err) {
     console.log(err);
     res.status(500).send('Server Error');
   }
