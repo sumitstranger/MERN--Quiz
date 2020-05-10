@@ -84,18 +84,14 @@ route.post(
   }
 );
 
-route.get('/:quiz_id', auth, async (req, res) => {
+route.get('/:quiz_id', async (req, res) => {
   try {
     let que_set = new Array();
     const quiz = await Qusetion.find({ quiz_name: req.params.quiz_id });
 
     que_set = await Promise.all(
-      quiz.forEach(async (q) => {
+      quiz.map(async (q) => {
         let ques_obj = new Object();
-
-        ques_obj = {
-          question: q,
-        };
 
         const option = await Option.find({ question: q._id });
 
@@ -103,12 +99,11 @@ route.get('/:quiz_id', auth, async (req, res) => {
 
         option.forEach((opt) => option_set.push(opt));
 
+        ques_obj = {
+          question: q,
+          option: option_set,
+        };
         return ques_obj;
-        // ques_obj = {
-        //   question: q,
-        //   option: JSON.stringify(option_set),
-        // };
-
         //  console.log(ques_obj);
       })
     );
@@ -122,4 +117,32 @@ route.get('/:quiz_id', auth, async (req, res) => {
   }
 });
 
+route.get('/', async (req, res) => {
+  try {
+    const quizList = await Quiz.find();
+    res.json(quizList);
+  } catch (error) {
+    console.log(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = route;
+
+route.post('/:id', async (req, res) => {
+  let score = 0;
+  try {
+    console.log('-------');
+    await Promise.all(
+      Object.values(req.body).map(async (id) => {
+        const option = await Option.findById(id).select('isCorrect');
+        if (option.isCorrect) score = score + 1;
+      })
+    );
+    console.log(score);
+    res.json({ score });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Server Error');
+  }
+});

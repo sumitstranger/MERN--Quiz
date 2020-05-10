@@ -1,15 +1,17 @@
 import {
   GET_QUIZ,
-  GET_QUESTIONS,
-  GET_OPTIONS,
+  GET_QUESTIONS_SET,
+  ERROR,
+  RESPONCE_SEND,
 } from '../components/action/types';
 
 const initialState = {
-  quiz: [],
-  questions: {},
-  options: [],
+  quizList: [],
+  questions: [],
   errors: {},
   loading: true,
+  result: false,
+  score: 0,
 };
 
 export default function (state = initialState, action) {
@@ -18,19 +20,26 @@ export default function (state = initialState, action) {
     case GET_QUIZ:
       return {
         ...state,
-        quiz: payload,
+        quizList: payload,
         loading: false,
       };
-    case GET_QUESTIONS:
+    case GET_QUESTIONS_SET:
       return {
         ...state,
         questions: payload,
         loading: false,
       };
-    case GET_OPTIONS:
+    case ERROR:
       return {
         ...state,
-        //Remaining
+        errors: payload,
+        loading: false,
+      };
+    case RESPONCE_SEND:
+      return {
+        ...state,
+        result: true,
+        ...payload,
       };
 
     default:
