@@ -84,7 +84,11 @@ route.post(
   }
 );
 
-route.get('/:quiz_id', async (req, res) => {
+//route GET /api/quiz/:quiz_id
+//decq   get question set by quiz_id
+//access private
+
+route.get('/:quiz_id', auth, async (req, res) => {
   try {
     let que_set = new Array();
     const quiz = await Qusetion.find({ quiz_name: req.params.quiz_id });
@@ -117,7 +121,11 @@ route.get('/:quiz_id', async (req, res) => {
   }
 });
 
-route.get('/', async (req, res) => {
+//route GET /api/quiz
+//decq   Get all quiz List
+//access private
+
+route.get('/', auth, async (req, res) => {
   try {
     const quizList = await Quiz.find();
     res.json(quizList);
@@ -127,22 +135,47 @@ route.get('/', async (req, res) => {
   }
 });
 
-module.exports = route;
+//route POST /api/quiz/:quiz_id
+//decq   create quiz
+//access private
 
-route.post('/:id', async (req, res) => {
+route.post('/:quiz_id', auth, async (req, res) => {
   let score = 0;
   try {
     console.log('-------');
+    const choose_ids = req.body;
     await Promise.all(
-      Object.values(req.body).map(async (id) => {
+      Object.values(choose_ids).map(async (id) => {
         const option = await Option.findById(id).select('isCorrect');
         if (option.isCorrect) score = score + 1;
       })
     );
     console.log(score);
+    const user = await User.findById(req.user.id);
+    const taken_obj = {
+      quiz: req.params.quiz_id,
+      score,
+    };
+    user.taken.unshift(taken_obj);
+    await user.save();
+    console.log('taken_obj', taken_obj);
+
+    const taken_by = Object({
+      user: req.user.id,
+      score,
+    });
+    const quiz = await Quiz.findById(req.params.quiz_id);
+    console.log('quiz', quiz);
+
+    console.log('taken_by', taken_by);
+    quiz.taken_by_list.unshift(taken_by);
+    await quiz.save();
+
     res.json({ score });
   } catch (err) {
     console.log(err);
     res.status(500).send('Server Error');
   }
 });
+
+module.exports = route;

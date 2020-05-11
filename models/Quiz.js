@@ -11,10 +11,21 @@ const QuizSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
-  taken_by: {
-    type: Number,
-    default: 0,
-  },
+  taken_by_list: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+      },
+      score: {
+        type: Number,
+      },
+      taken_on: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,

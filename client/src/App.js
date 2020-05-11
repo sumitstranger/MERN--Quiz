@@ -13,6 +13,11 @@ import Quiz from './components/quiz_view/Quiz';
 import Question from './components/question/Question';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import setAuthToken from './utils/setAuthToken';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => (
   <Provider store={store}>

@@ -9,7 +9,9 @@ export const getQuiz = () => async (dispatch) => {
       type: GET_QUIZ,
       payload: res.data,
     });
+    console.log(localStorage.token);
   } catch (err) {
+    console.log('[Error]', err.response.data);
     dispatch({
       type: ERROR,
       payload: err,
@@ -24,7 +26,9 @@ export const getQuestion = (quiz_id) => async (dispatch) => {
       type: GET_QUESTIONS_SET,
       payload: res.data,
     });
+    console.log(localStorage.token);
   } catch (err) {
+    console.log('[Error]', err.response.data);
     dispatch({
       type: ERROR,
       payload: err,
@@ -45,7 +49,9 @@ export const sendQuizResponse = (formData, quiz_id) => async (dispatch) => {
       type: RESPONCE_SEND,
       payload: res.data,
     });
+    console.log(localStorage.token);
   } catch (err) {
+    console.log('[Error]', err.response.data);
     dispatch({
       type: ERROR,
       payload: err,

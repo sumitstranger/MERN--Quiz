@@ -22,6 +22,10 @@ export const login = ({ email, password }) => async (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    console.log(localStorage.token);
   } catch (err) {
     console.log('[LOGIN_FAIL]', err.response.data);
     dispatch({
@@ -43,6 +47,10 @@ export const register = ({ name, email, password }) => async (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    console.log(localStorage.token);
   } catch (err) {
     console.log('[REGISTER_FAIL]', err.response.data);
     dispatch({

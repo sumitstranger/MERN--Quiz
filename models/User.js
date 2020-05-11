@@ -19,6 +19,21 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  taken: [
+    {
+      quiz: {
+        type: Schema.Types.ObjectId,
+        ref: 'quiz',
+      },
+      score: {
+        type: Number,
+      },
+      taken_on: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
