@@ -3,6 +3,7 @@ import {
   LOGIN_SUCCESS,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
+  LOGOUT,
 } from './types';
 import axios from 'axios';
 
@@ -57,4 +58,10 @@ export const register = ({ name, email, password }) => async (dispatch) => {
       type: REGISTER_FAIL,
     });
   }
+};
+
+export const logout = () => (dispatch) => {
+  dispatch({
+    type: LOGOUT,
+  });
 };

@@ -14,6 +14,7 @@ import Question from './components/question/Question';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import setAuthToken from './utils/setAuthToken';
+import Navbar from './components/layout/Navbar';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -23,6 +24,7 @@ const App = () => (
   <Provider store={store}>
     <Router>
       <Fragment>
+        <Navbar />
         <Switch>
           <Route exact path='/' component={Login} />
           <Route exact path='/register' component={Register} />
