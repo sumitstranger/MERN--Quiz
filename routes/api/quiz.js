@@ -151,9 +151,11 @@ route.post('/:quiz_id', auth, async (req, res) => {
       })
     );
     console.log(score);
+    const quiz = await Quiz.findById(req.params.quiz_id);
     const user = await User.findById(req.user.id);
     const taken_obj = {
       quiz: req.params.quiz_id,
+      quiz_name: quiz.quiz_name,
       score,
     };
     user.taken.unshift(taken_obj);
@@ -164,7 +166,7 @@ route.post('/:quiz_id', auth, async (req, res) => {
       user: req.user.id,
       score,
     });
-    const quiz = await Quiz.findById(req.params.quiz_id);
+
     console.log('quiz', quiz);
 
     console.log('taken_by', taken_by);

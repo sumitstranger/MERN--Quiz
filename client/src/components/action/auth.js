@@ -4,6 +4,8 @@ import {
   REGISTER_FAIL,
   REGISTER_SUCCESS,
   LOGOUT,
+  LODEUSER_SUCCESS,
+  LODEUSER_FAIL,
 } from './types';
 import axios from 'axios';
 
@@ -64,4 +66,19 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
+};
+
+export const getUser = () => async (dispatch) => {
+  try {
+    const res = await axios.get('/api/users/me');
+    dispatch({
+      type: LODEUSER_SUCCESS,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log('[LODEUSER_FAIL]', err.response.data);
+    dispatch({
+      type: LODEUSER_FAIL,
+    });
+  }
 };

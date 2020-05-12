@@ -4,6 +4,8 @@ import {
   REGISTER_FAIL,
   REGISTER_SUCCESS,
   LOGOUT,
+  LODEUSER_SUCCESS,
+  LODEUSER_FAIL,
 } from '../components/action/types';
 
 const initialState = {
@@ -24,6 +26,19 @@ export default function (state = initialState, action) {
         ...payload,
         isAuthenticated: true,
         loading: false,
+      };
+    case LODEUSER_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+        user: payload,
+      };
+    case LODEUSER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        user: null,
       };
     case LOGOUT:
     case REGISTER_FAIL:

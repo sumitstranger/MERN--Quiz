@@ -25,6 +25,9 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'quiz',
       },
+      quiz_name: {
+        type: String,
+      },
       score: {
         type: Number,
       },
