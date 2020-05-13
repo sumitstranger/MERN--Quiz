@@ -16,6 +16,7 @@ import Register from './components/auth/Register';
 import setAuthToken from './utils/setAuthToken';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
+import Users from './components/users/Users';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -30,6 +31,7 @@ const App = () => (
           <Route exact path='/' component={Login} />
           <Route exact path='/dashboard' component={Dashboard} />
           <Route exact path='/register' component={Register} />
+          <Route exact path='/users' component={Users} />
           <Route exact path='/quiz' component={Quiz} />
           <Route exact path='/:id' component={Question} />
         </Switch>
